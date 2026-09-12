@@ -1,0 +1,52 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aika-react-backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    ports:
+      - "8001:8001"
+    volumes:
+      - backend_data:/app/data
+      - backend_logs:/app/logs
+    networks:
+      - aika-react-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Baked in at BUILD time and used by the BROWSER, so this must be an
+        # address the browser can reach - not http://backend:8001, which
+        # resolves only inside the Docker network. This is the one real
+        # difference from a server-side client, and the most common thing to
+        # get wrong when deploying this project.
+        VITE_API_BASE_URL: http://localhost:8001
+    container_name: aika-react-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - aika-react-network
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+  backend_logs:
+
+networks:
+  aika-react-network:
+    driver: bridge

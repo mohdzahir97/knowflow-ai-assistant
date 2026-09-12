@@ -1,0 +1,222 @@
+/*
+ * Design tokens.
+ *
+ * Every colour, space and size in the app resolves to one of these. Nothing
+ * downstream hard-codes a hex value or a pixel, so the whole product can be
+ * retuned from this file and light/dark stay in step by construction.
+ *
+ * Palettes are defined three times on purpose: once on bare `:root` (light),
+ * once under `prefers-color-scheme: dark` guarded so an explicit light choice
+ * still wins, and once under `[data-theme="dark"]` so the in-app toggle beats
+ * the OS in both directions.
+ */
+
+:root {
+  /* --- Neutrals -------------------------------------------------------
+     A single ramp, so borders, surfaces and text all relate to each other
+     instead of being picked independently. */
+  --grey-0: #ffffff;
+  --grey-25: #fcfcfd;
+  --grey-50: #f8f9fb;
+  --grey-100: #f1f2f6;
+  --grey-200: #e4e6ed;
+  --grey-300: #d2d5df;
+  --grey-400: #a5a9b8;
+  --grey-500: #767c8f;
+  --grey-600: #565c6e;
+  --grey-700: #3d4251;
+  --grey-800: #272b36;
+  --grey-900: #191c24;
+  --grey-950: #101219;
+
+  /* --- Accent ---------------------------------------------------------
+     Indigo. Deliberately one accent: a second competes with it and the UI
+     stops having a single obvious primary action. */
+  --accent-50: #eef2ff;
+  --accent-100: #e0e7ff;
+  --accent-200: #c7d2fe;
+  --accent-400: #818cf8;
+  --accent-500: #6366f1;
+  --accent-600: #4f46e5;
+  --accent-700: #4338ca;
+
+  /* --- Status ---------------------------------------------------------- */
+  --green-50: #ecfdf5;
+  --green-500: #10b981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --amber-50: #fffbeb;
+  --amber-500: #f59e0b;
+  --amber-700: #b45309;
+  --red-50: #fef2f2;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  /* --- Semantic surfaces ---------------------------------------------- */
+  --bg: var(--grey-50);
+  --bg-elevated: var(--grey-0);
+  --surface: var(--grey-0);
+  --surface-hover: var(--grey-100);
+  --surface-sunken: var(--grey-100);
+  --surface-inset: var(--grey-25);
+
+  --border: var(--grey-200);
+  --border-strong: var(--grey-300);
+
+  --text: var(--grey-900);
+  --text-secondary: var(--grey-600);
+  --text-muted: var(--grey-500);
+  --text-inverted: var(--grey-0);
+
+  --accent: var(--accent-600);
+  --accent-hover: var(--accent-700);
+  --accent-soft: var(--accent-50);
+  --accent-soft-border: var(--accent-200);
+  --accent-text: #ffffff;
+
+  --success: var(--green-700);
+  --success-soft: var(--green-50);
+  --warning: var(--amber-700);
+  --warning-soft: var(--amber-50);
+  --danger: var(--red-600);
+  --danger-hover: var(--red-700);
+  --danger-soft: var(--red-50);
+
+  --focus-ring: 0 0 0 3px var(--accent-200);
+
+  /* --- Elevation ------------------------------------------------------
+     Three steps only. More produces a UI where nothing reads as the top
+     layer. */
+  --shadow-sm: 0 1px 2px rgba(16, 18, 25, 0.06), 0 1px 3px rgba(16, 18, 25, 0.05);
+  --shadow-md: 0 4px 12px rgba(16, 18, 25, 0.08), 0 1px 3px rgba(16, 18, 25, 0.05);
+  --shadow-lg: 0 16px 40px rgba(16, 18, 25, 0.14), 0 2px 8px rgba(16, 18, 25, 0.06);
+
+  /* --- Spacing: a 4px scale ------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* --- Radii ----------------------------------------------------------- */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  /* --- Layout ---------------------------------------------------------- */
+  --sidebar-width: 280px;
+  --topbar-height: 56px;
+  --content-max: 900px;
+  --measure: 68ch; /* comfortable reading width for answers */
+
+  /* --- Motion ---------------------------------------------------------- */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-fast: 120ms;
+  --duration: 200ms;
+}
+
+/* Dark, following the OS unless the user has explicitly chosen light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--grey-950);
+    --bg-elevated: var(--grey-900);
+    --surface: var(--grey-900);
+    --surface-hover: var(--grey-800);
+    --surface-sunken: var(--grey-950);
+    --surface-inset: var(--grey-800);
+
+    --border: #2c313d;
+    --border-strong: #3a4050;
+
+    --text: #edeef2;
+    --text-secondary: #b6bac7;
+    --text-muted: #8d93a3;
+    --text-inverted: var(--grey-950);
+
+    /* Lifted from 600: mid-tone indigo on a near-black surface does not
+       clear contrast requirements for text or icons. */
+    --accent: var(--accent-400);
+    --accent-hover: #93a0fa;
+    --accent-soft: rgba(99, 102, 241, 0.16);
+    --accent-soft-border: rgba(129, 140, 248, 0.35);
+    --accent-text: #0b0d14;
+
+    --success: #4ade80;
+    --success-soft: rgba(16, 185, 129, 0.14);
+    --warning: #fbbf24;
+    --warning-soft: rgba(245, 158, 11, 0.14);
+    --danger: #f87171;
+    --danger-hover: #fca5a5;
+    --danger-soft: rgba(239, 68, 68, 0.14);
+
+    --focus-ring: 0 0 0 3px rgba(129, 140, 248, 0.4);
+
+    /* Shadows barely read on dark surfaces, so they are deepened rather
+       than reused. */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.65);
+  }
+}
+
+/* Explicit dark choice: wins over an OS set to light. */
+:root[data-theme="dark"] {
+  --bg: var(--grey-950);
+  --bg-elevated: var(--grey-900);
+  --surface: var(--grey-900);
+  --surface-hover: var(--grey-800);
+  --surface-sunken: var(--grey-950);
+  --surface-inset: var(--grey-800);
+
+  --border: #2c313d;
+  --border-strong: #3a4050;
+
+  --text: #edeef2;
+  --text-secondary: #b6bac7;
+  --text-muted: #8d93a3;
+  --text-inverted: var(--grey-950);
+
+  --accent: var(--accent-400);
+  --accent-hover: #93a0fa;
+  --accent-soft: rgba(99, 102, 241, 0.16);
+  --accent-soft-border: rgba(129, 140, 248, 0.35);
+  --accent-text: #0b0d14;
+
+  --success: #4ade80;
+  --success-soft: rgba(16, 185, 129, 0.14);
+  --warning: #fbbf24;
+  --warning-soft: rgba(245, 158, 11, 0.14);
+  --danger: #f87171;
+  --danger-hover: #fca5a5;
+  --danger-soft: rgba(239, 68, 68, 0.14);
+
+  --focus-ring: 0 0 0 3px rgba(129, 140, 248, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.65);
+}
